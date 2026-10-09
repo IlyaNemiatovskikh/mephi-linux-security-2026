@@ -27,7 +27,7 @@ sudo find / -type f -perm -4000 -print
 
 Список сохранён в [suid-files.out](suid-files.out). В [privileged-processes.out](privileged-processes.out) найден процесс `passwd` с RUID 1234 и EUID 0.
 
-[Скриншот](screenshots/02-processes.png) показывает другой замер и ошибку пути при сохранении через `tee`; текстовый результат записан отдельно.
+[Скриншот](screenshots/02-processes.png).
 
 ## 3. Механизм set-UID
 
@@ -77,8 +77,8 @@ UID, группы и срок действия пароля сохранилис
 
 ## Материалы работы
 
-- [mephi-screenshot.png](mephi-screenshot.png): снимок с бухгалтерским шифром.
-- [etc/](etc/): копии `passwd`, `group`, `shadow`, `sudoers` и правила sudo из учебной ВМ.
-- [stat.out](stat.out) и [getcap.out](getcap.out): права файлов и capability.
-- [history.out](history.out): сводная история нескольких сеансов; содержит повторы и ошибки ввода, порядок строк не отражает общую хронологию.
-- [screenshots/](screenshots/): снимки основных этапов работы.
+- [mephi-screenshot.png](mephi-screenshot.png) - снимок с бухгалтерским шифром.
+- [etc/](etc/): копии `passwd`, `group`, `shadow`, `sudoers` и правила sudo из учебной VM.
+- [stat.out](stat.out) и [getcap.out](getcap.out) - права файлов и capability.
+- [history.out](history.out) - сводная история нескольких сеансов.
+- [screenshots/](screenshots/) - снимки основных этапов работы.

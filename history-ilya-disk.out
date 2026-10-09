@@ -1,0 +1,49 @@
+    1  sudo chown root:root /home/user1/lab-bin/cat-suid
+    2  sudo chmod 4755 /home/user1/lab-bin/cat-suid
+    3  sudo restorecon -RF /home/user1/lab-bin /var/lib/mephi-security
+    4  sudo cp /usr/bin/chown /home/user1/lab-bin/chown-cap
+    5  sudo chmod 0755 /usr/bin/chown /home/user1/lab-bin/chown-cap
+    6  sudo restorecon -v /home/user1/lab-bin/chown-cap
+    7  sudo setcap cap_chown=ep /home/user1/lab-bin/chown-cap
+    8  sudo getcap /home/user1/lab-bin/chown-cap
+    9  sudo --version | head -n 1
+   10  command -v timedatectl
+   11  sudo grep -E '^[[:space:]]*[@#]includedir[[:space:]]+/etc/sudoers.d' /etc/sudoers
+   12  printf '%s\n' 'user1 ALL=(root) /usr/bin/timedatectl set-time [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]' | sudo tee /var/lib/mephi-security/user1-time.sudoers > /dev/null
+   13  sudo chmod 0440 /var/lib/mephi-security/user1-time.sudoers
+   14  sudo visudo -cf /var/lib/mephi-security/user1-time.sudoers
+   15  sudo install -o root -g root -m 0440 /var/lib/mephi-security/user1-time.sudoers /etc/sudoers.d/90-user1-time
+   16  sudo visudo -c
+   17  timedatectl show -p NTP --value > "$HOME/mephi-linux-security-2026/ntp-before.out"
+   18  cat "$HOME/mephi-linux-security-2026/ntp-before.out"
+   19  sudo timedatectl set-ntp false
+   20  sudo -l | tee "$HOME/sudo-user1.out"
+   21  if [ "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   22  if [ "$(cat "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   23  history > "$HOME/history-before-reboot.out"
+   24  history -w
+   25  sudo chown root:root /home/user1/lab-bin/cat-suid
+   26  sudo chmod 4755 /home/user1/lab-bin/cat-suid
+   27  sudo restorecon -RF /home/user1/lab-bin /var/lib/mephi-security
+   28  sudo cp /usr/bin/chown /home/user1/lab-bin/chown-cap
+   29  sudo chmod 0755 /usr/bin/chown /home/user1/lab-bin/chown-cap
+   30  sudo restorecon -v /home/user1/lab-bin/chown-cap
+   31  sudo setcap cap_chown=ep /home/user1/lab-bin/chown-cap
+   32  sudo getcap /home/user1/lab-bin/chown-cap
+   33  sudo --version | head -n 1
+   34  command -v timedatectl
+   35  sudo grep -E '^[[:space:]]*[@#]includedir[[:space:]]+/etc/sudoers.d' /etc/sudoers
+   36  printf '%s\n' 'user1 ALL=(root) /usr/bin/timedatectl set-time [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]' | sudo tee /var/lib/mephi-security/user1-time.sudoers > /dev/null
+   37  sudo chmod 0440 /var/lib/mephi-security/user1-time.sudoers
+   38  sudo visudo -cf /var/lib/mephi-security/user1-time.sudoers
+   39  sudo install -o root -g root -m 0440 /var/lib/mephi-security/user1-time.sudoers /etc/sudoers.d/90-user1-time
+   40  sudo visudo -c
+   41  timedatectl show -p NTP --value > "$HOME/mephi-linux-security-2026/ntp-before.out"
+   42  cat "$HOME/mephi-linux-security-2026/ntp-before.out"
+   43  sudo timedatectl set-ntp false
+   44  sudo -l | tee "$HOME/sudo-user1.out"
+   45  if [ "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   46  if [ "$(cat "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   47  history > "$HOME/history-before-reboot.out"
+   48  history -w
+   49  sudo reboot

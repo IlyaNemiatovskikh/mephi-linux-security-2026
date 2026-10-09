@@ -1,0 +1,11 @@
+    1  unset HISTCONTROL HISTIGNORE
+    2  set -o pipefail
+    3  "$HOME/lab-bin/cat-suid" /var/lib/mephi-security/root-only.txt | tee "$HOME/suid-after-reboot.out"
+    4  touch "$HOME/lab-data/owner-after-reboot.txt"
+    5  "$HOME/lab-bin/chown-cap" root:root "$HOME/lab-data/owner-after-reboot.txt"
+    6  stat -c '%n owner=%U(%u) group=%G(%g)' "$HOME/lab-data/owner-after-reboot.txt" | tee "$HOME/cap-after-reboot.out"
+    7  history > "$HOME/history-user1-after-reboot.out"
+    8  stat /home/user1 > "$HOME/stat.out"
+    9  passwd
+   10  getcap "$HOME/lab-bin/chown-cap" > "$HOME/getcap-after-reboot.out"
+   11  history > "$HOME/history-console-user1.out"

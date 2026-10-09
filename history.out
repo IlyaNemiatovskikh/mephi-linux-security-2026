@@ -1,0 +1,159 @@
+    1  sudo chown root:root /home/user1/lab-bin/cat-suid
+    2  sudo chmod 4755 /home/user1/lab-bin/cat-suid
+    3  sudo restorecon -RF /home/user1/lab-bin /var/lib/mephi-security
+    4  sudo cp /usr/bin/chown /home/user1/lab-bin/chown-cap
+    5  sudo chmod 0755 /usr/bin/chown /home/user1/lab-bin/chown-cap
+    6  sudo restorecon -v /home/user1/lab-bin/chown-cap
+    7  sudo setcap cap_chown=ep /home/user1/lab-bin/chown-cap
+    8  sudo getcap /home/user1/lab-bin/chown-cap
+    9  sudo --version | head -n 1
+   10  command -v timedatectl
+   11  sudo grep -E '^[[:space:]]*[@#]includedir[[:space:]]+/etc/sudoers.d' /etc/sudoers
+   12  printf '%s\n' 'user1 ALL=(root) /usr/bin/timedatectl set-time [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]' | sudo tee /var/lib/mephi-security/user1-time.sudoers > /dev/null
+   13  sudo chmod 0440 /var/lib/mephi-security/user1-time.sudoers
+   14  sudo visudo -cf /var/lib/mephi-security/user1-time.sudoers
+   15  sudo install -o root -g root -m 0440 /var/lib/mephi-security/user1-time.sudoers /etc/sudoers.d/90-user1-time
+   16  sudo visudo -c
+   17  timedatectl show -p NTP --value > "$HOME/mephi-linux-security-2026/ntp-before.out"
+   18  cat "$HOME/mephi-linux-security-2026/ntp-before.out"
+   19  sudo timedatectl set-ntp false
+   20  sudo -l | tee "$HOME/sudo-user1.out"
+   21  if [ "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   22  if [ "$(cat "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   23  history > "$HOME/history-before-reboot.out"
+   24  history -w
+   25  sudo chown root:root /home/user1/lab-bin/cat-suid
+   26  sudo chmod 4755 /home/user1/lab-bin/cat-suid
+   27  sudo restorecon -RF /home/user1/lab-bin /var/lib/mephi-security
+   28  sudo cp /usr/bin/chown /home/user1/lab-bin/chown-cap
+   29  sudo chmod 0755 /usr/bin/chown /home/user1/lab-bin/chown-cap
+   30  sudo restorecon -v /home/user1/lab-bin/chown-cap
+   31  sudo setcap cap_chown=ep /home/user1/lab-bin/chown-cap
+   32  sudo getcap /home/user1/lab-bin/chown-cap
+   33  sudo --version | head -n 1
+   34  command -v timedatectl
+   35  sudo grep -E '^[[:space:]]*[@#]includedir[[:space:]]+/etc/sudoers.d' /etc/sudoers
+   36  printf '%s\n' 'user1 ALL=(root) /usr/bin/timedatectl set-time [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]' | sudo tee /var/lib/mephi-security/user1-time.sudoers > /dev/null
+   37  sudo chmod 0440 /var/lib/mephi-security/user1-time.sudoers
+   38  sudo visudo -cf /var/lib/mephi-security/user1-time.sudoers
+   39  sudo install -o root -g root -m 0440 /var/lib/mephi-security/user1-time.sudoers /etc/sudoers.d/90-user1-time
+   40  sudo visudo -c
+   41  timedatectl show -p NTP --value > "$HOME/mephi-linux-security-2026/ntp-before.out"
+   42  cat "$HOME/mephi-linux-security-2026/ntp-before.out"
+   43  sudo timedatectl set-ntp false
+   44  sudo -l | tee "$HOME/sudo-user1.out"
+   45  if [ "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   46  if [ "$(cat "$HOME/mephi-linux-security-2026/ntp-before.out")" = yes ]; then sudo timedatectl set-ntp true; fi
+   47  history > "$HOME/history-before-reboot.out"
+   48  history -w
+   49  sudo reboot
+    1  /usr/bin/cat /var/lib/mephi-security/root-only.txt 2>&1 | tee "$HOME/suid-before.out"
+    2  printf 'exit=%s\n' "$?"
+    3  set -o pipefail
+    4  /usr/bin/cat /var/lib/mephi-security/root-only.txt 2>&1 | tee "$HOME/suid-before.out"
+    5  printf 'exit=%s\n' "$?"
+    6  "$HOME/lab-bin/cat-suid" /var/lib/mephi-security/root-only.txt | tee "$HOME/suid-after.out"
+    7  printf 'exit=%s\n' "$?"
+    8  mkdir -p "$HOME/lab-data"
+    9  touch "$HOME/lab-data/owner-demo.txt"
+   10  stat -c '%n owner=%U(%u) group=%G(%g) mode=%a' "$HOME/lab-data/owner-demo.txt" | tee "$HOME/cap-owner-before.out"
+   11  /usr/bin/chown root:root "$HOME/lab-data/owner-demo.txt" 2>&1 | tee "$HOME/cap-before.out"
+   12  printf 'exit=%s\n' "$?"
+   13  "$HOME/lab-bin/chown-cap" root:root "$HOME/lab-data/owner-demo.txt"
+   14  printf 'exit=%s\n' "$?"
+   15  stat -c '%n owner=%U(%u) group=%G(%g) mode=%a' "$HOME/lab-data/owner-demo.txt" | tee "$HOME/cap-owner-after.out"
+   16  sudo -l | tee "$HOME/sudo-user1.out"
+   17  date --iso-8601=seconds | tee "$HOME/time-before.out"
+   18  sudo /usr/bin/timedatectl set-time "$(date -d '+1 minute' '+%F %T')"
+   19  printf 'exit=%s\n' "$?"
+   20  date --iso-8601=seconds | tee "$HOME/time-after.out"
+   21  history > "$HOME/history-user1-before-reboot.out"
+   22  history -w
+   23  /usr/bin/cat /var/lib/mephi-security/root-only.txt 2>&1 | tee "$HOME/suid-before.out"
+   24  printf 'exit=%s\n' "$?"
+   25  set -o pipefail
+   26  /usr/bin/cat /var/lib/mephi-security/root-only.txt 2>&1 | tee "$HOME/suid-before.out"
+   27  printf 'exit=%s\n' "$?"
+   28  "$HOME/lab-bin/cat-suid" /var/lib/mephi-security/root-only.txt | tee "$HOME/suid-after.out"
+   29  printf 'exit=%s\n' "$?"
+   30  mkdir -p "$HOME/lab-data"
+   31  touch "$HOME/lab-data/owner-demo.txt"
+   32  stat -c '%n owner=%U(%u) group=%G(%g) mode=%a' "$HOME/lab-data/owner-demo.txt" | tee "$HOME/cap-owner-before.out"
+   33  /usr/bin/chown root:root "$HOME/lab-data/owner-demo.txt" 2>&1 | tee "$HOME/cap-before.out"
+   34  printf 'exit=%s\n' "$?"
+   35  "$HOME/lab-bin/chown-cap" root:root "$HOME/lab-data/owner-demo.txt"
+   36  printf 'exit=%s\n' "$?"
+   37  stat -c '%n owner=%U(%u) group=%G(%g) mode=%a' "$HOME/lab-data/owner-demo.txt" | tee "$HOME/cap-owner-after.out"
+   38  sudo -l | tee "$HOME/sudo-user1.out"
+   39  date --iso-8601=seconds | tee "$HOME/time-before.out"
+   40  sudo /usr/bin/timedatectl set-time "$(date -d '+1 minute' '+%F %T')"
+   41  printf 'exit=%s\n' "$?"
+   42  date --iso-8601=seconds | tee "$HOME/time-after.out"
+   43  history > "$HOME/history-user1-before-reboot.out"
+   44  history -w
+   45  exit
+    1  unset HISTCONTROL HISTIGNORE
+    2  set -o pipefail
+    3  "$HOME/lab-bin/cat-suid" /var/lib/mephi-security/root-only.txt | tee "$HOME/suid-after-reboot.out"
+    4  touch "$HOME/lab-data/owner-after-reboot.txt"
+    5  "$HOME/lab-bin/chown-cap" root:root "$HOME/lab-data/owner-after-reboot.txt"
+    6  stat -c '%n owner=%U(%u) group=%G(%g)' "$HOME/lab-data/owner-after-reboot.txt" | tee "$HOME/cap-after-reboot.out"
+    7  history > "$HOME/history-user1-after-reboot.out"
+    8  stat /home/user1 > "$HOME/stat.out"
+    9  passwd
+   10  getcap "$HOME/lab-bin/chown-cap" > "$HOME/getcap-after-reboot.out"
+   11  history > "$HOME/history-console-user1.out"
+    1  unset HISTCONTROL HISTIGNORE
+    2  export HISTSIZE=100000 HISTFILESIZE=100000
+    3  set -0 pipefail
+    4  set -o pipefail
+    5  id user1 | tee "$HOME/mephi-linux-security-2026/user1-id-after-reboot.out"
+    6  sudo env LC_ALL=C chage -l user1 | tee "$HOME/mephi-linux-security-2026/user1-chage-after-reboot.out"
+    7  sudo stat -c '%n owner=%U(%u) mode=%a' /home/user1/lab-bin/cat-suid | tee "$HOME/mephi-linux-security-2026/suid-stat-after-reboot.out"
+    8  sudo getcap /home/user1/lab-bin/chown-cap | tee "$HOME/mephi-linux-security-2026/getcap-after-reboot.out"
+    9  sudo -l -U user1 | tee "$HOME/mephi-linux-security-2026/getcap-after-reboot.out"
+   10  stat /home/user1 > "$HOME/stat.out"
+   11  sudo stat /home/user1/lab-bin/chown-cap >> "$HOME/stat.out"
+   12  sudo stat /home/user1/lab-bin/cat-suid >> "$HOME/stat.out"
+   13  sudo stat /home/user1/lab-bin/chown-cap >> "$HOME/stat.out"
+   14  cp "$HOME/stat.out" "$HOME/mephi-linux-security-2026/stat.out"
+   15  sudo getcap /home/user1/lab-bin/chown-cap > "$HOME/getcap.out"
+   16  cp "$HOME/getcap.out" "$HOME/mephi-linux-security-2026/getcap.out"
+   17  cp /etc/passwd "$HOME/mephi-linux-security-2026/etc/passwd"
+   18  cp /etc/group "$HOME/mephi-linux-security-2026/etc/group"
+   19  sudo cat /etc/sudoers > "$HOME/mephi-linux-security-2026/etc/sudoers"
+   20  sudo cat /etc/sudoers.d/90-user1-time > "$HOME/mephi-linux-security-2026/etc/sudoers.d/90-user1-time"
+   21  sudo cp /home/user1/{suid-before,suid-after,cap-owner-before,cap-before,cap-owner-after,sudo-user1,time-before,time-after,suid-after-reboot,cap-after-reboot,history-user1-before-reboot,history-user1-after-reboot}.out "$HOME/mephi-linux-security-2026/"
+   22  sudo chown -R "$(id -g)" "$HOME/mephi-linux-security-2026"
+   23  sudo find / -type f -perm -4000 -print > "$HOME/mephi-linux-security-2026/suid-files.out" 2> "$HOME/mephi-linux-security-2026/suid-find-errors.out"
+   24  printf 'Student ID (buhgalterskiy shifr): 374537\n'
+   25  rpm -q openssh-server
+   26  systemctl is-active sshd
+   27  systemctl is-active firewalld
+   28  sudo firewalld-cmd --permanent --add-service=ssh
+   29  sudo firewall-cmd --permanent --add-service=ssh
+   30  sudo firewall-cmd --add-service=ssh
+   31  history > ~/history.out
+   32  cat "$HOME/history-before-reboot.out" "$HOME/mephi-linux-security-2026/history-user1-before-reboot.out" "$HOME/mephi-linux-security-2026/history-user1-after-reboot.out" "$HOME/history.out" > "$HOME/mephi-linux-security-2026/history.out"
+   33  tar -czf "$HOME/mephi-artifacts.tar.gz" -C "$HOME/mephi-linux-security-2026" .
+   34  sudo cat /etc/shadow > "$HOME/mephi-linux-security-2026/etc/shadow"
+   35  ps -eo pid,ppid,ruid,euid,user,comm,args --sort=pid | awk 'NR == 1 || ($4 == 0 && $3 >= 1000 && $3 != 65534)' | tee "$HOME/mephi-linux-security-2026/privileged-processes.out"
+   36  history > "$HOME/history-console-ilya.out"
+    1  getent passwd user1
+    2  getent passwd 1234
+    3  getent group students
+    4  sudo groupadd students
+    5  sudo useradd -m -U -u 1234 -G students -s /bin/bash user1
+    6  sudo passwd user1
+    7  sudo chage -m 0 -M 90 -W 7 user1
+    8  sudo chmod 0750 /home/user1
+    9  id user1 | tee "$HOME/mephi-linux-security-2026/user1-id.out"
+   10  sudo env LC_ALL=C chage -l user1 | tee "$HOME/mephi-linux-security-2026/user1-chage.out"
+   11  awk '$1 == "UID_MIN" {print $2}' /etc/login.defs
+   12  sudo install -d -o root -g root -m 0755 /var/lib/mephi-security
+   13  printf 'MEPHI Linux Security: root-only file; student 374537\n' | sudo tee /var/lib/mephi-security/root-only.txt > /dev/null
+   14  sudo chmod 0600 /var/lib/mephi-security/root-only.txt
+   15  sudo install -d -o root -g root -m 0755 /home/user1/lab-bin
+   16  sudo cp /usr/bin/cat /home/user1/lab-bin/cat-suid
+   17  sudo ls -l /var/lib/mephi-security/root-only.txt /home/user1/lab-bin/cat-suid
+   18  sudo chown root:root /home/user1/lab-bin/chown-cap

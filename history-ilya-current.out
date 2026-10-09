@@ -1,0 +1,36 @@
+    1  unset HISTCONTROL HISTIGNORE
+    2  export HISTSIZE=100000 HISTFILESIZE=100000
+    3  set -0 pipefail
+    4  set -o pipefail
+    5  id user1 | tee "$HOME/mephi-linux-security-2026/user1-id-after-reboot.out"
+    6  sudo env LC_ALL=C chage -l user1 | tee "$HOME/mephi-linux-security-2026/user1-chage-after-reboot.out"
+    7  sudo stat -c '%n owner=%U(%u) mode=%a' /home/user1/lab-bin/cat-suid | tee "$HOME/mephi-linux-security-2026/suid-stat-after-reboot.out"
+    8  sudo getcap /home/user1/lab-bin/chown-cap | tee "$HOME/mephi-linux-security-2026/getcap-after-reboot.out"
+    9  sudo -l -U user1 | tee "$HOME/mephi-linux-security-2026/getcap-after-reboot.out"
+   10  stat /home/user1 > "$HOME/stat.out"
+   11  sudo stat /home/user1/lab-bin/chown-cap >> "$HOME/stat.out"
+   12  sudo stat /home/user1/lab-bin/cat-suid >> "$HOME/stat.out"
+   13  sudo stat /home/user1/lab-bin/chown-cap >> "$HOME/stat.out"
+   14  cp "$HOME/stat.out" "$HOME/mephi-linux-security-2026/stat.out"
+   15  sudo getcap /home/user1/lab-bin/chown-cap > "$HOME/getcap.out"
+   16  cp "$HOME/getcap.out" "$HOME/mephi-linux-security-2026/getcap.out"
+   17  cp /etc/passwd "$HOME/mephi-linux-security-2026/etc/passwd"
+   18  cp /etc/group "$HOME/mephi-linux-security-2026/etc/group"
+   19  sudo cat /etc/sudoers > "$HOME/mephi-linux-security-2026/etc/sudoers"
+   20  sudo cat /etc/sudoers.d/90-user1-time > "$HOME/mephi-linux-security-2026/etc/sudoers.d/90-user1-time"
+   21  sudo cp /home/user1/{suid-before,suid-after,cap-owner-before,cap-before,cap-owner-after,sudo-user1,time-before,time-after,suid-after-reboot,cap-after-reboot,history-user1-before-reboot,history-user1-after-reboot}.out "$HOME/mephi-linux-security-2026/"
+   22  sudo chown -R "$(id -g)" "$HOME/mephi-linux-security-2026"
+   23  sudo find / -type f -perm -4000 -print > "$HOME/mephi-linux-security-2026/suid-files.out" 2> "$HOME/mephi-linux-security-2026/suid-find-errors.out"
+   24  printf 'Student ID (buhgalterskiy shifr): 374537\n'
+   25  rpm -q openssh-server
+   26  systemctl is-active sshd
+   27  systemctl is-active firewalld
+   28  sudo firewalld-cmd --permanent --add-service=ssh
+   29  sudo firewall-cmd --permanent --add-service=ssh
+   30  sudo firewall-cmd --add-service=ssh
+   31  history > ~/history.out
+   32  cat "$HOME/history-before-reboot.out" "$HOME/mephi-linux-security-2026/history-user1-before-reboot.out" "$HOME/mephi-linux-security-2026/history-user1-after-reboot.out" "$HOME/history.out" > "$HOME/mephi-linux-security-2026/history.out"
+   33  tar -czf "$HOME/mephi-artifacts.tar.gz" -C "$HOME/mephi-linux-security-2026" .
+   34  sudo cat /etc/shadow > "$HOME/mephi-linux-security-2026/etc/shadow"
+   35  ps -eo pid,ppid,ruid,euid,user,comm,args --sort=pid | awk 'NR == 1 || ($4 == 0 && $3 >= 1000 && $3 != 65534)' | tee "$HOME/mephi-linux-security-2026/privileged-processes.out"
+   36  history > "$HOME/history-console-ilya.out"

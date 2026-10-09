@@ -1,0 +1,36 @@
+  File: /home/user1
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 252,0	Inode: 17289161    Links: 4
+Access: (0750/drwxr-x---)  Uid: ( 1234/   user1)   Gid: ( 1234/   user1)
+Context: unconfined_u:object_r:user_home_dir_t:s0
+Access: 2026-10-08 01:03:09.841133985 -0400
+Modify: 2026-10-08 01:39:47.464177844 -0400
+Change: 2026-10-08 01:39:47.464177844 -0400
+ Birth: 2026-10-06 01:36:10.484983523 -0400
+  File: /home/user1/lab-bin/chown-cap
+  Size: 69984     	Blocks: 144        IO Block: 4096   regular file
+Device: 252,0	Inode: 17193087    Links: 1
+Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: unconfined_u:object_r:user_home_t:s0
+Access: 2026-10-07 02:01:47.236198009 -0400
+Modify: 2026-10-07 01:32:46.745037297 -0400
+Change: 2026-10-07 01:51:01.707960800 -0400
+ Birth: 2026-10-07 01:32:46.745037297 -0400
+  File: /home/user1/lab-bin/cat-suid
+  Size: 40696     	Blocks: 80         IO Block: 4096   regular file
+Device: 252,0	Inode: 17193079    Links: 1
+Access: (4755/-rwsr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: unconfined_u:object_r:user_home_t:s0
+Access: 2026-10-07 01:27:25.159442438 -0400
+Modify: 2026-10-06 02:29:24.077496913 -0400
+Change: 2026-10-07 01:09:33.691661460 -0400
+ Birth: 2026-10-06 02:29:24.077496913 -0400
+  File: /home/user1/lab-bin/chown-cap
+  Size: 69984     	Blocks: 144        IO Block: 4096   regular file
+Device: 252,0	Inode: 17193087    Links: 1
+Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: unconfined_u:object_r:user_home_t:s0
+Access: 2026-10-07 02:01:47.236198009 -0400
+Modify: 2026-10-07 01:32:46.745037297 -0400
+Change: 2026-10-07 01:51:01.707960800 -0400
+ Birth: 2026-10-07 01:32:46.745037297 -0400
